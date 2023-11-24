@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { Course } from '@prisma/client';
 
 const formSchema = z.object({
   description: z.string().min(1, {
@@ -27,9 +28,7 @@ const formSchema = z.object({
 });
 
 interface DescriptionFormProps {
-  initialData: {
-    description: string | null;
-  };
+  initialData: Course;
   courseId: string;
 }
 
