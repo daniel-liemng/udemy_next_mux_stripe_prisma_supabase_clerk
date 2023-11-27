@@ -143,7 +143,7 @@ export const DELETE = async (
     // Check this: after deleting this chapter, there is still one active chapter  --> delete this chapter means unpublishing the entire course
     const publishedChaptersInCourse = await prismadb.chapter.findMany({
       where: {
-        id: params.chapterId,
+        courseId: params.courseId,
         isPublished: true,
       },
     });
