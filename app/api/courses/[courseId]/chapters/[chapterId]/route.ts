@@ -1,6 +1,12 @@
 import { prismadb } from '@/lib/prismadb';
 import { auth } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
+import Mux from '@mux/mux-node';
+
+const { Video } = new Mux(
+  process.env.MUX_TOKEN_ID!,
+  process.env.MUX_TOKEN_SECRET!
+);
 
 export const PATCH = async (
   req: Request,
@@ -37,7 +43,37 @@ export const PATCH = async (
       },
     });
 
-    // Handle video upload
+    // Handle video upload - MUX
+    if (values.videoUrl) {
+      const existingMuxData = await prismadb.muxData.findFirst({
+        where: {
+          chapterId: params.chapterId,
+        },
+      });
+
+      if (existingMuxData) {
+        await Video.Assets.del(existingMuxData.assetId);
+        await prismadb.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+
+      const asset = await Video.Assets.create({
+        input: values.videoUrl,
+        playback_policy: 'public',
+        test: false,
+      });
+
+      await prismadb.muxData.create({
+        data: {
+          chapterId: params.chapterId,
+          assetId: asset.id,
+          playbackId: asset.playback_ids?.[0]?.id,
+        },
+      });
+    }
 
     return NextResponse.json(chapter);
   } catch (err) {
