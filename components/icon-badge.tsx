@@ -47,6 +47,7 @@ interface IconBadgeProps extends BackgroundVariantsProps, IconVariantsProps {
   icon: LucideIcon;
 }
 
+// Self-built
 const IconBadge = ({ icon: Icon, variant, size }: IconBadgeProps) => {
   return (
     <div className={cn(backgroundVariants({ variant, size }))}>
