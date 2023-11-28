@@ -8,6 +8,12 @@ body,
   height: 100%;
 }
 
+:root {
+  --primary: #f1f1f1;
+  --secondary: rgba(31, 209, 253, 0.4);
+  --tertiary: rgba(31, 209, 253, 0.6);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -86,3 +92,29 @@ body,
 }
 
 @import '~@uploadthing/react/styles.css';
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--primary);
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 14px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 11px;
+  border: 3px solid var(--primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--tertiary);
+}
